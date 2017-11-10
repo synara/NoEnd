@@ -12,9 +12,8 @@ local sheet = graphics.newImageSheet("sprites/sprites.png", sheetInfo:getSheet()
 
 local bgJumpMusic = audio.loadStream("jump.wav");
 local bgUpdateScore = audio.loadStream("updateScore.mp3");
-local bgPhase = audio.loadStream("phase.ogg", {loop = -1});
+local bgPhase = audio.loadStream("phase.ogg");
 local gameover = audio.loadStream("death.wav")
-audio.play(bgPhase);
 
 local largura = display.contentWidth;
 local altura = display.contentHeight;
@@ -38,6 +37,7 @@ local fatorLevel = 1;
 local tabelaObstaculos = { };
 local sceneGroup = display.newGroup()
 local diamantes = display.newGroup()
+local groupFruits = display.newGroup()
 local buttonsGroup = display.newGroup();
 local emergeLoop;
 local reconstruirMontanha = 20;
@@ -96,9 +96,6 @@ function scene:create( event )
 	local groupScene = self.view;
  end
 
-function cenaInicial()
-
-end
 
 function scene:show (event) 
 	local groupScene = self.view;
@@ -181,32 +178,16 @@ function scene:show (event)
 	sceneGroup:insert(corda2);
 
 	galho1 = display.newImage("sprites-novos/galhos.png");
-	galho1.x = (largura *.5); galho1.y = galho1.y - 60;
+	galho1.x = (largura *.5); galho1.y = galho1.y + 50;
 	sceneGroup:insert(galho1);
 
 	galho2 = display.newImage("sprites-novos/galhos.png");
-	galho2.x = (largura *.5) + 400; galho2.y = galho2.y - 60;
+	galho2.x = (largura *.5) + 400; galho2.y = galho2.y + 50;
 	sceneGroup:insert(galho2);
 
 	galho3 = display.newImage("sprites-novos/galhos.png");
-	galho3.x = (largura *.5) - 400; galho3.y = galho3.y - 60;
+	galho3.x = (largura *.5) - 400; galho3.y = galho3.y + 50;
 	sceneGroup:insert(galho3);
-
-	--[[galho4 = display.newImage("sprites-novos/galhosdir.png");
-	galho4.x = (largura *.5) + 450; galho4.y = galho4.y + 290;
-	sceneGroup:insert(galho4);
-
-	galho5 = display.newImage("sprites-novos/galhosdir.png");
-	galho5.x = (largura *.5) + 450; galho5.y = galho5.y + 650;
-	sceneGroup:insert(galho5);
-
-	galho6 = display.newImage("sprites-novos/galhosesq.png");
-	galho6.x = (largura *.5) - 450; galho6.y = galho6.y + 290;
-	sceneGroup:insert(galho6);
-
-	galho7 = display.newImage("sprites-novos/galhosesq.png");
-	galho7.x = (largura *.5) - 450; galho7.y = galho7.y + 650;
-	sceneGroup:insert(galho7);]]--
 
 	shantel = display.newSprite(sheet, sequenciaShantel);	
 	shantel.x = (largura *.5) - 350; shantel.y = (altura *.5) - 250;
@@ -221,7 +202,6 @@ function scene:show (event)
 
 	primeiraNuvemIndo()
 	segundaNuvemIndo()
-	initGame()
 end
 
 function initGame() 
@@ -231,26 +211,57 @@ function initGame()
 		frutasdir[0] = display.newImage("sprites-novos/banana.png");
 		frutasdir[0].x = largura *.5 + 270; frutasdir[0].y = altura *.5 + 183;
 		frutasdir[0].isVisible = false;
+		groupFruits:insert(frutasdir[0])
 
 		frutasdir[1] = display.newImage("sprites-novos/maca.png");
 		frutasdir[1].x = largura *.5 + 270; frutasdir[1].y = altura *.5 + 183;
 		frutasdir[1].isVisible = false;
+		groupFruits:insert(frutasdir[1])
 
 		frutasdir[2] = display.newImage("sprites-novos/limao.png");
 		frutasdir[2].x = largura *.5 + 270; frutasdir[2].y = altura *.5 + 183;
 		frutasdir[2].isVisible = false;
-
-		transition.to(frutasdir[aleatorio], { time = 500, y = 950, x = 650})
+		groupFruits:insert(frutasdir[2])
+		
+		transition.to(frutasdir[aleatorio], { time = 500, y = 950, x = 600})
 		frutasdir[aleatorio].isVisible = true;
 		physics.addBody(frutasdir[aleatorio], "dynamic")
 
 		table.insert(tabelaObstaculos, frutasdir[0]);
 		table.insert(tabelaObstaculos, frutasdir[1]);
 		table.insert(tabelaObstaculos, frutasdir[2]);
+		
+		frutasesq[0] = display.newImage("sprites-novos/banana.png");
+		frutasesq[0].x = largura *.5 - 270; frutasesq[0].y = altura *.5 + 183;
+		frutasesq[0].isVisible = false;
+		groupFruits:insert(frutasesq[0])
+		
+		frutasesq[1] = display.newImage("sprites-novos/maca.png");
+		frutasesq[1].x = largura *.5 - 270; frutasesq[1].y = altura *.5 + 183;
+		frutasesq[1].isVisible = false;
+		groupFruits:insert(frutasesq[1])
+		
+		frutasesq[2] = display.newImage("sprites-novos/limao.png");
+		frutasesq[2].x = largura *.5 - 270; frutasesq[2].y = altura *.5 + 183;
+		frutasesq[2].isVisible = false;
+		groupFruits:insert(frutasesq[2])
+		
+		transition.to(frutasesq[aleatorio], { time = 500, y = frutasesq[aleatorio].y - 200, x = frutasesq[aleatorio].x + 180})
+		frutasesq[aleatorio].isVisible = true;
+		physics.addBody(frutasesq[aleatorio], "dynamic")
+
+		table.insert(tabelaObstaculos, frutasesq[0]);
+		table.insert(tabelaObstaculos, frutasesq[1]);
+		table.insert(tabelaObstaculos, frutasesq[2]);
 end
 
---init = timer.performWithDelay(2500, initGame, -1)
+init = timer.performWithDelay(900, initGame, 1)
 
+function song()
+	audio.play(bgPhase);
+end
+
+songbg = timer.performWithDelay(2, song, -1);
 
 function scene:hide( event )
 
@@ -333,10 +344,9 @@ local function updateScore()
 		scoreText.text = score;
 
 		if score == changeTime then
-			print("entrei")
 			reconstruirMontanha = reconstruirMontanha + 5;
 			changeTime = changeTime + 20;
-			scrollSpeed = scrollSpeed + 10;		
+			scrollSpeed = scrollSpeed + 2;		
 		end
 	end
 end
@@ -344,13 +354,12 @@ end
 local scoreTimer = timer.performWithDelay(tempo, updateScore, 0)
 
 function criarObstaculos() 
-	local whereFrom = math.random( 100 )
+	local whereFrom = math.random( 150 )
 	local posicaoX = math.random(440, 640)
 
 		local criarDiamante = function()
             	if(whereFrom == 2) then
 					diamante = display.newImage("sprites-novos/diamond.png");
-					print(diamante)
 					table.insert(tabelaObstaculos, diamante);
 					diamantes:insert(diamante)
 					physics.addBody(diamante, "dynamic");
@@ -359,8 +368,8 @@ function criarObstaculos()
 					diamante.y = -60;
 					diamante:setLinearVelocity(0, 10*fatorLevel)
 				end
-        	end
-        	timer.performWithDelay( 1000, criarDiamante )
+        end
+        	timer.performWithDelay( 9000, criarDiamante )
 
 		if( whereFrom == 1 ) then
 	        banana = display.newImage("sprites-novos/banana2.png");
@@ -430,12 +439,8 @@ function loop(event)
 		galho1.y = galho1.y - scrollSpeed;
 		galho2.y = galho2.y - scrollSpeed;
 		galho3.y = galho3.y - scrollSpeed;
-	
-		frutasdir[0].isVisible = false;
-		frutasdir[1].isVisible = false;
-		frutasdir[2].isVisible = false;
 		
-		if score >= 3 then 
+		if score >= 2 then 
 			criarObstaculos();
 		end
 
@@ -456,10 +461,10 @@ function onLocalCollision(self, event)
 	if(event.phase == "ended") then
 		if(event.target.name == "shantel" and event.other.name == "diamante") then
 			audio.play(bgUpdateScore)
-			score = score + 20;
+			score = score + 5;
 			local hideObject = function()
-            	event.other.isBodyActive = false
-            	event.other.isVisible = false
+				event.other.isBodyActive = false;
+				event.other.isVisible = false;
         	end
         	timer.performWithDelay( 0.1, hideObject, 1 )
 		end
@@ -470,11 +475,19 @@ function onLocalCollision(self, event)
 			comecou = false;
 			transitando = false;
 			physics.pause();
+			timer.cancel(init);
+			Runtime:removeEventListener("touch", toque)			
 
-			for i = diamantes.numChildren, 1, -1 do 
-				local d = diamantes[i];
-				d.isVisible = false;
-			end
+			
+		for i = diamantes.numChildren, 1, -1 do 
+			local d = diamantes[i];
+			d.isVisible = false;
+		end
+
+		for j = groupFruits.numChildren, 1, -1 do
+			local f = groupFruits[j];
+			f.isVisible = false;
+		end
 			
 			timer.performWithDelay(500, callGameOver, 1)
 		end
@@ -482,7 +495,9 @@ function onLocalCollision(self, event)
 end
 
 function callGameOver()
-	audio.pause(); 
+	composer.setVariable( "score", score )	
+	audio.pause();
+	score = 0;
 	composer.gotoScene("gameover")
 end
 
@@ -491,7 +506,5 @@ scene:addEventListener( "show", scene )
 scene:addEventListener( "hide", scene )
 scene:addEventListener( "destroy", scene )
 Runtime:addEventListener( "touch", toque )
---Runtime:addEventListener("enterFrame", loop)
-
 updateScore()
 return scene;
