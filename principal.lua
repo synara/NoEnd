@@ -12,7 +12,7 @@ local sheet = graphics.newImageSheet("sprites/sprites.png", sheetInfo:getSheet()
 
 local bgJumpMusic = audio.loadStream("jump.wav");
 local bgUpdateScore = audio.loadStream("updateScore.mp3");
-local bgPhase = audio.loadStream("phase.ogg");
+local bgPhase = audio.loadStream("forest.ogg");
 local gameover = audio.loadStream("death.wav")
 
 local largura = display.contentWidth;
@@ -200,8 +200,8 @@ function scene:show (event)
 	shantel.collision = onLocalCollision;
 	shantel:addEventListener("collision", shantel);
 
-	primeiraNuvemIndo()
-	segundaNuvemIndo()
+	--primeiraNuvemIndo()
+	--segundaNuvemIndo()
 end
 
 function initGame() 
@@ -336,7 +336,7 @@ end
 scoreText =  display.newText("", 950, 100, "slkscrb", 65);
 scoreText:setTextColor(0, 0, 0);
 
-local function updateScore()
+function updateScore()
 	local changeTime = 10;
 	local primeiro = true;
 	if(comecou == true) then
@@ -497,7 +497,6 @@ end
 function callGameOver()
 	composer.setVariable( "score", score )	
 	audio.pause();
-	score = 0;
 	composer.gotoScene("gameover")
 end
 
